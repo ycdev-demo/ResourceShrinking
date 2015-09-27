@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        applicationId "me.ycdev.android.demo.resshrink"
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        androidTestKey {
+            storeFile file("apk.keystore")
+            storePassword "android"
+            keyAlias "android.testkey"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.androidTestKey
+        }
+
+        release {
+            signingConfig signingConfigs.androidTestKey
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            shrinkResources true
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibVersion
+    compile project(':uilib')
+}
